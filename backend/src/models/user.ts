@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 import { UserType } from "../shared/types";
 
 export enum UserRole {
