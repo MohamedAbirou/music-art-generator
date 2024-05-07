@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose, { Schema } from "mongoose";
 import { UserType } from "../shared/types";
 
 export enum UserRole {
@@ -6,7 +6,7 @@ export enum UserRole {
   USER = "USER",
 }
 
-const userSchema = new mongoose.Schema({
+const userSchema: Schema<UserType> = new Schema({
   fullName: {
     type: String,
     required: true,
@@ -14,8 +14,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Ensure email uniqueness
-    // Validate email format using a regular expression
+    unique: true,
     validate: {
       validator: function (value: string) {
         return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value);
