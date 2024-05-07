@@ -3,7 +3,6 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import MongoStore from "connect-mongo";
 import path from "path";
 import morgan from "morgan";
 import passport from "passport";
@@ -54,9 +53,6 @@ app.use(
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
-    store: MongoStore.create({
-      client: mongoose.connection.getClient(),
-    }),
   })
 );
 app.use(passport.initialize());
