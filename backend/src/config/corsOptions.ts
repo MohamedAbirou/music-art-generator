@@ -2,9 +2,7 @@ import "dotenv/config";
 
 export const corsOptions = {
   origin: function (
-    origin: string | undefined = process.env.FRONTEND_URL ||
-      process.env.BACKEND_URL ||
-      process.env.LIVE_PUBLIC_URL,
+    origin: string | undefined = process.env.FRONTEND_URL,
     callback: (err: Error | null, allow?: boolean) => void
   ) {
     if (origin) {
