@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import { UserType } from "../shared/types";
 
 export enum UserRole {
@@ -6,7 +6,7 @@ export enum UserRole {
   USER = "USER",
 }
 
-const userSchema: Schema<UserType> = new Schema({
+const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
     required: true,
