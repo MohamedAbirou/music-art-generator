@@ -51,6 +51,10 @@ export const login = async (formData: LoginFormData) => {
   return response.data;
 };
 
+export const googleLogin = () => {
+  window.location.href = `${API_BASE_URL}/api/auth/google`;
+};
+
 export const logout = async () => {
   const response = await axios.post(
     `${API_BASE_URL}/api/auth/logout`,

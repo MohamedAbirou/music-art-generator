@@ -6,6 +6,18 @@ import { validationResult } from "express-validator";
 
 import "dotenv/config";
 
+declare global {
+  namespace Express {
+    interface User {
+      id: string;
+    }
+
+    interface Request {
+      user?: User;
+    }
+  }
+}
+
 // @desc Login
 // @route POST /auth
 // @access Public
@@ -49,6 +61,27 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
+const googleLogin = (req: Request, res: Response) => {
+  // User is authenticated with Google, create JWT token
+  const token = jwt.sign(
+    { userId: req.user?.id },
+    process.env.JWT_SECRET_KEY as string,
+    {
+      expiresIn: "1d",
+    }
+  );
+
+  // Set JWT token as cookie
+  res.cookie("auth_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  // Successful authentication,
+  res.redirect("/");
+};
+
 const validateToken = (req: Request, res: Response) => {
   // Check if userId is present in the request indicating authentication
   if (req.userId) {
@@ -70,4 +103,4 @@ const logout = (req: Request, res: Response) => {
   return res.status(200).json({ message: "Logged out successfully" });
 };
 
-export { login, logout, validateToken };
+export { login, googleLogin, logout, validateToken };

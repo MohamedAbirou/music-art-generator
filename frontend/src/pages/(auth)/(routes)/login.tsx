@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { EyeOff, Eye } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 
 export type LoginFormData = {
   email: string;
@@ -29,8 +30,9 @@ const Login = () => {
       await queryClient.invalidateQueries("validateToken");
       navigate(location.state?.from?.pathname || "/");
     },
-    onError: (error: Error) => {
-      toast.error(error.message);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      toast.error(error.response.data.message);
     },
   });
 
@@ -51,7 +53,7 @@ const Login = () => {
           >
             Music & <span className="text-blue-500 pl-1">Art</span>
           </Link>
-          <div className="w-[400px]">
+          <div className="w-full max-w-[500px] px-4">
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl pb-3">Sign In</h2>
               <span className="text-sm">
@@ -111,6 +113,16 @@ const Login = () => {
 
             <button className="bg-[#2654E1] w-full text-white px-3 py-1.5 hover:bg-[#2654E1]/90 transition-colors duration-300 rounded">
               Login
+            </button>
+
+            <hr className="h-0.5 bg-slate-200 my-5" />
+
+            <button
+              onClick={apiClient.googleLogin}
+              className="flex items-center justify-center w-full hover:bg-slate-100 transition-colors duration-300 px-3 border py-1.5 rounded"
+            >
+              <FcGoogle className="mr-2 w-6 h-6" />
+              <p className="pt-0.5">Sign in with Google</p>
             </button>
           </div>
         </form>

@@ -5,11 +5,18 @@ export type UserType = {
   fullName: string;
   email: string;
   password: string;
+  picture?: string;
   role: UserRole;
 };
 
 export type AccountType = {
   _id: string;
-  email: string;
   googleId: string;
+  userId: string;
+  email: string;
+  provider: String;
+  providerAccountId: String;
+  refreshToken: String;
+  accessToken: String;
+  expiresAt: Number;
 };

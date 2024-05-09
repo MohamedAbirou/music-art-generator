@@ -9,7 +9,7 @@ export const TestimCard = ({ testimonial }: TestimCardProps) => {
   return (
     <div
       style={{ backgroundColor: color }}
-      className="w-[430px] h-[450px] border flex flex-col gap-y-10 p-16 rounded-3xl"
+      className="w-[310px] h-[430px] sm:w-[420px] sm:h-[430px] md:w-[430px] md:h-[460px] border flex flex-col gap-y-10 p-10 sm:p-16 rounded-3xl"
     >
       <div>
         <RiDoubleQuotesL size={40} />

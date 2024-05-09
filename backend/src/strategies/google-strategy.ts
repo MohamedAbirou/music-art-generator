@@ -1,20 +1,21 @@
 import passport from "passport";
-import { Strategy } from "passport-google-oauth20";
+import { Strategy } from "passport-google-oauth2";
 import Account from "../models/account";
+import User from "../models/user";
+import bcrypt from "bcryptjs";
+import { UserType } from "../shared/types";
 
-import "dotenv/config";
-
-passport.serializeUser((user: any, done) => {
-  done(null, user.id);
+passport.serializeUser((user: UserType | any, done) => {
+  done(null, user._id);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async function (id: string, done) {
   try {
-    const findUser = await Account.findById(id);
+    const user = (await User.findById(id)) as any;
 
-    if (!findUser) throw new Error("User not found");
+    if (!user) throw new Error("User not found! (deserializer)");
 
-    done(null, findUser);
+    done(null, user);
   } catch (error) {
     done(error, null);
   }
@@ -30,34 +31,50 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // Check if profile.emails is defined and not empty
         const email =
           profile.emails && profile.emails.length
             ? profile.emails[0].value
             : null;
 
         if (!email) {
-          // Handle case where email is not provided by Google
           return done(new Error("Email not provided by Google"), undefined);
         }
 
-        const findUser = await Account.findOne({ googleId: profile.id });
+        let user = await User.findOne({ email });
 
-        if (!findUser) {
-          const newAccount = new Account({
+        const hashedPwd = await bcrypt.hash("GoogleAuth", 10);
+
+        if (!user) {
+          user = new User({
+            email,
+            fullName: profile.displayName,
+            picture: profile.photos?.[0].value,
+            password: hashedPwd,
+          });
+          await user.save();
+        }
+
+        let account = await Account.findOne({ googleId: profile.id });
+
+        if (!account) {
+          account = new Account({
             email,
             googleId: profile.id,
+            userId: user._id,
+            picture: profile.photos?.[0].value,
+            provider: "google",
+            providerAccountId: profile.id,
+            refreshToken,
+            accessToken,
           });
-          const newSavedAccount = await newAccount.save();
-          return done(null, newSavedAccount);
+          await account.save();
         }
-        return done(null, findUser);
+
+        return done(null, user);
       } catch (error) {
-        console.error("Error during Google authentication:", error);
-        return done(error as Error | null | undefined, undefined);
+        console.error("Error during Google authentication", error);
+        return done(error, undefined);
       }
     }
   )
 );
-
-export default passport;

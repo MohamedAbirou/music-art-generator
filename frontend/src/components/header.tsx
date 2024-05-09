@@ -41,11 +41,14 @@ export const Header = () => {
         {isLoggedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar className="flex bg-[#2654E1]/[40%] items-center justify-center cursor-pointer">
-                <AvatarImage src="ds" alt="@userImg" />
+              <Avatar
+                className={`flex ${
+                  !currentUser?.picture && "bg-[#2654E1]/[40%]"
+                } items-center justify-center cursor-pointer border`}
+              >
+                <AvatarImage src={currentUser?.picture} alt="@userImg" />
                 <AvatarFallback>
                   {currentUser?.fullName.charAt(0)}
-                  {currentUser?.fullName.split(" ")[1].charAt(0)}
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
@@ -69,10 +72,35 @@ export const Header = () => {
         )}
       </span>
       <Sheet>
-        <SheetTrigger className="flex md:hidden">
+        <SheetTrigger className="flex items-center space-x-5 md:hidden">
           <Music />
+          {isLoggedIn && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar
+                  className={`flex ${
+                    !currentUser?.picture && "bg-[#2654E1]/[40%]"
+                  } items-center justify-center cursor-pointer border`}
+                >
+                  <AvatarImage src={currentUser?.picture} alt="@userImg" />
+                  <AvatarFallback>
+                    {currentUser?.fullName.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-40 rounded mr-2">
+                <div className="hover:bg-slate-300 cursor-pointer rounded text-sm px-2 py-1">
+                  <Link to="/my-generations">My Gens</Link>
+                </div>
+                <DropdownMenuSeparator className="bg-slate-300" />
+                <div className="hover:bg-red-300 cursor-pointer rounded text-sm px-2 py-1">
+                  <SignOutButton />
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </SheetTrigger>
-        <SheetContent className="bg-white flex flex-col justify-start pt-20">
+        <SheetContent className="bg-white flex flex-col justify-start pt-20 overflow-y-scroll">
           <SheetHeader className="text-gray-400 text-sm border-b-2 w-full">
             navigation
           </SheetHeader>
@@ -88,26 +116,26 @@ export const Header = () => {
               {route.name}
             </Link>
           ))}
-          <SheetHeader className="mt-10 text-gray-400 text-sm border-b-2 w-full">
-            Register
-          </SheetHeader>
-          {isLoggedIn ? (
-            <SignOutButton />
-          ) : (
-            <div className="flex items-center justify-between">
-              <Link
-                to="/login"
-                className="px-4 py-2 bg-gray-500 hover:bg-[#2654E1]/[40%] transition-colors duration-300 text-white text-base rounded-[0.3rem]"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="px-4 py-2 bg-gray-500 hover:bg-[#2654E1]/[40%] transition-colors duration-300 text-white text-base rounded-[0.3rem]"
-              >
+          {!isLoggedIn && (
+            <>
+              <SheetHeader className="mt-10 text-gray-400 text-sm border-b-2 w-full">
                 Register
-              </Link>
-            </div>
+              </SheetHeader>
+              <div className="flex items-center justify-between">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 bg-gray-500 hover:bg-[#2654E1]/[40%] transition-colors duration-300 text-white text-base rounded-[0.3rem]"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 bg-gray-500 hover:bg-[#2654E1]/[40%] transition-colors duration-300 text-white text-base rounded-[0.3rem]"
+                >
+                  Register
+                </Link>
+              </div>
+            </>
           )}
           <SheetHeader className="mt-10 text-gray-400 text-sm border-b-2 w-full">
             Socials

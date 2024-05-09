@@ -1,12 +1,21 @@
 import mongoose from "mongoose";
 import { AccountType } from "../shared/types";
 
-const AccountSchema = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  googleId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
-    unique: true, // Ensure email uniqueness
-    // Validate email format using a regular expression
+    unique: true,
     validate: {
       validator: function (value: string) {
         return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value);
@@ -14,13 +23,14 @@ const AccountSchema = new mongoose.Schema({
       message: "Invalid email format",
     },
   },
-  googleId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+  picture: String,
+  provider: String,
+  providerAccountId: String,
+  refreshToken: String,
+  accessToken: String,
+  expiresAt: Number,
 });
 
-const Account = mongoose.model<AccountType>("Account", AccountSchema);
+const Account = mongoose.model<AccountType>("Account", accountSchema);
 
 export default Account;

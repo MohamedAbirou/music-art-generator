@@ -17,7 +17,7 @@ export const Testimonials = () => {
           delay: 3000,
         }),
       ]}
-      className="w-full max-w-full py-20 space-y-32"
+      className="w-full max-w-full px-4 lg:px-0 py-20 space-y-32"
     >
       <div>
         <div className="flex items-center text-center flex-col gap-y-5 lg:gap-y-0 text-xl">

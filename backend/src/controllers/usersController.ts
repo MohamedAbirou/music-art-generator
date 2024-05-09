@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import User from "../models/user";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
-
 import "dotenv/config";
 
 // @desc Get current user

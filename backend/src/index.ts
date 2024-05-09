@@ -72,14 +72,6 @@ app.get(
   "/api/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-app.get(
-  "/api/auth/callback/google",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  (req: Request, res: Response) => {
-    // Successful authentication, redirect to a page or send a response
-    res.redirect("/");
-  }
-);
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
