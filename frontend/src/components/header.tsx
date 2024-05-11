@@ -71,7 +71,8 @@ export const Header = () => {
           </Link>
         )}
       </span>
-      <Sheet>
+      <div>
+        <Sheet>
         <SheetTrigger className="flex items-center space-x-5 md:hidden">
           <Music />
         </SheetTrigger>
@@ -154,6 +155,7 @@ export const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       )}
+      </div>
     </div>
   );
 };
