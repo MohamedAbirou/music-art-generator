@@ -71,9 +71,9 @@ export const Header = () => {
           </Link>
         )}
       </span>
-      <div>
+      <div className="flex items-center space-x-5">
         <Sheet>
-        <SheetTrigger className="flex items-center space-x-5 md:hidden">
+        <SheetTrigger className="md:hidden">
           <Music />
         </SheetTrigger>
         <SheetContent className="bg-white flex flex-col justify-start pt-20 overflow-y-scroll">
