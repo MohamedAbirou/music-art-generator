@@ -23,6 +23,10 @@ const accountSchema = new mongoose.Schema({
       message: "Invalid email format",
     },
   },
+  sessionId: {
+    type: String,
+    default: null,
+  },
   picture: String,
   provider: String,
   providerAccountId: String,

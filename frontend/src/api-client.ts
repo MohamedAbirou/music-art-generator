@@ -84,3 +84,15 @@ export const validateToken = async () => {
 
   return response.data;
 };
+
+export const checkSession = async () => {
+  const response = await axios.get(`${API_BASE_URL}/api/auth/check-session`, {
+    withCredentials: true,
+  });
+
+  if (response.status !== 200) {
+    throw new Error("Session check failed");
+  }
+
+  return response.data;
+};

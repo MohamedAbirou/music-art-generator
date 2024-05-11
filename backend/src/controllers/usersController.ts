@@ -77,6 +77,20 @@ const createNewUser = async (req: Request, res: Response) => {
     user = new User(userObject);
     await user.save();
 
+    if (user.sessionId) {
+      req.sessionStore.destroy(user.sessionId, (err) => {
+        if (err) {
+          console.log("Error destroying old session:", err);
+        }
+      });
+    }
+
+    // Store user ID in the session
+    req.session.userId = user.id;
+
+    // Store the new session ID in the user document
+    user.sessionId = req.sessionID;
+
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET_KEY as string,
@@ -85,7 +99,7 @@ const createNewUser = async (req: Request, res: Response) => {
       }
     );
 
-    res.cookie("auth_token", token, {
+    res.cookie("auth_token_cookie", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 7 * 24 * 60 * 60 * 1000,

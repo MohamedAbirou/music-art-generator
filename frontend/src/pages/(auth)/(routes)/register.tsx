@@ -30,6 +30,7 @@ const Register = () => {
     onSuccess: async () => {
       toast.success("Registration successful!");
       await queryClient.invalidateQueries("validateToken");
+      await queryClient.invalidateQueries("checkSession");
       navigate("/");
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

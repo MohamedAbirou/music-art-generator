@@ -10,6 +10,7 @@ export const SignOutButton = () => {
   const mutation = useMutation(apiClient.logout, {
     onSuccess: async () => {
       await queryClient.invalidateQueries("validateToken");
+      await queryClient.invalidateQueries("checkSession");
       toast.success("Logged out!");
       navigate("/");
     },

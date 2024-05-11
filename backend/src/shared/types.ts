@@ -7,6 +7,7 @@ export type UserType = {
   password: string;
   picture?: string;
   role: UserRole;
+  sessionId?: string;
 };
 
 export type AccountType = {
@@ -19,4 +20,5 @@ export type AccountType = {
   refreshToken: String;
   accessToken: String;
   expiresAt: Number;
+  sessionId?: string;
 };

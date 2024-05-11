@@ -13,14 +13,26 @@ export const AppContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { isError } = useQuery("validateToken", apiClient.validateToken, {
-    retry: false,
-  });
+  const { isError: isTokenError } = useQuery(
+    "validateToken",
+    apiClient.validateToken,
+    {
+      retry: false,
+    }
+  );
+
+  const { isError: isSessionError } = useQuery(
+    "checkSession",
+    apiClient.checkSession,
+    {
+      retry: false,
+    }
+  );
 
   return (
     <AppContext.Provider
       value={{
-        isLoggedIn: !isError,
+        isLoggedIn: !isTokenError && !isSessionError,
       }}
     >
       {children}

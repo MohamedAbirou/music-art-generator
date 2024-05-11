@@ -5,8 +5,9 @@ import {
   login,
   logout,
   validateToken,
+  checkSessionRoute,
 } from "../controllers/authController";
-import verifyToken from "../middleware/auth";
+import { checkSession, verifyToken } from "../middleware/auth";
 import { checkSchema } from "express-validator";
 import { userLoginValidationSchema } from "../utils/validationSchemas";
 import passport from "passport";
@@ -27,6 +28,8 @@ router
 
 router.route("/validate-token").get(verifyToken, validateToken);
 
-router.route("/logout").post(verifyToken, logout);
+router.route("/check-session").get(checkSession, checkSessionRoute);
+
+router.route("/logout").post(verifyToken, checkSession, logout);
 
 export default router;

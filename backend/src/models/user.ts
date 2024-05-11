@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
     enum: Object.values(UserRole),
     default: UserRole.USER,
   },
+  sessionId: {
+    type: String,
+    default: null,
+  },
 });
 
 const User = mongoose.model<UserType>("User", userSchema);

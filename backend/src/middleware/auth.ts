@@ -10,7 +10,7 @@ declare global {
 }
 
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies["auth_token"];
+  const token = req.cookies["auth_token_cookie"];
   if (!token) {
     return res.status(401).json({ message: "unauthorized" });
   }
@@ -24,4 +24,13 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default verifyToken;
+const checkSession = (req: Request, res: Response, next: NextFunction) => {
+  if (req.session.userId) {
+    req.userId = req.session.userId;
+    next(); // User is authenticated, continue to next middleware
+  } else {
+    res.status(401).json({ message: "Unauthorized" }); // User is not authenticated
+  }
+};
+
+export { verifyToken, checkSession };

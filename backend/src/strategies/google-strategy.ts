@@ -1,5 +1,6 @@
-import passport from "passport";
-import { Strategy } from "passport-google-oauth2";
+import passport, { Profile } from "passport";
+import { Strategy, VerifyCallback } from "passport-google-oauth2";
+import { Request } from "express";
 import Account from "../models/account";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
@@ -28,8 +29,15 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       callbackURL: "/api/auth/callback/google",
       scope: ["email"],
+      passReqToCallback: true,
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (
+      req: Request,
+      accessToken: string,
+      refreshToken: string,
+      profile: Profile,
+      done: VerifyCallback
+    ) => {
       try {
         const email =
           profile.emails && profile.emails.length
@@ -52,7 +60,20 @@ passport.use(
             password: hashedPwd,
           });
           await user.save();
+        } else if (user.sessionId) {
+          req.sessionStore.destroy(user.sessionId, (err: any) => {
+            if (err) {
+              console.log("Error destroying old session:", err);
+            }
+          });
         }
+
+        // Store user ID in the session
+        req.session.userId = user.id;
+
+        // Store the new session ID in the user document
+        user.sessionId = req.sessionID;
+        await user.save();
 
         let account = await Account.findOne({ googleId: profile.id });
 
@@ -68,7 +89,17 @@ passport.use(
             accessToken,
           });
           await account.save();
+        } else if (account.sessionId) {
+          req.sessionStore.destroy(account.sessionId, (err: any) => {
+            if (err) {
+              console.log("Error destroying old session:", err);
+            }
+          });
         }
+
+        // Store the new session ID in the account document
+        account.sessionId = req.sessionID;
+        await account.save();
 
         return done(null, user);
       } catch (error) {

@@ -28,6 +28,7 @@ const Login = () => {
     onSuccess: async () => {
       toast.success("Logged in!");
       await queryClient.invalidateQueries("validateToken");
+      await queryClient.invalidateQueries("checkSession");
       navigate(location.state?.from?.pathname || "/");
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

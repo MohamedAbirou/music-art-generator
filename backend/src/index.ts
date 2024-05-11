@@ -12,6 +12,7 @@ import rootRoute from "./routes/root";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import errorHandler from "./middleware/errorHandler";
+import MongoStore from "connect-mongo";
 
 import "dotenv/config";
 import "./config/connection";
@@ -47,9 +48,13 @@ app.use(cors(corsOptions));
 app.use(cookieParser(process.env.COOKIE_PARSER_KEY));
 app.use(
   session({
+    name: "session_cookie",
     secret: process.env.SESSION_SECRET_KEY as string,
     saveUninitialized: false,
     resave: false,
+    store: MongoStore.create({
+      client: mongoose.connection.getClient(),
+    }),
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
