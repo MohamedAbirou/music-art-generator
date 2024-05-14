@@ -47,7 +47,7 @@ const Register = () => {
     <>
       <div className="flex">
         <form
-          className="relative flex flex-col gap-5 items-center justify-center w-full md:w-[55%] min-h-screen"
+          className="relative flex flex-col gap-5 items-center justify-center w-full md:w-[55%]"
           onSubmit={onSubmit}
         >
           <Link
@@ -56,20 +56,23 @@ const Register = () => {
           >
             Music & <span className="text-blue-500 pl-1">Art</span>
           </Link>
-          <div className="w-full max-w-[500px] px-4">
+          <div className="w-full max-w-[500px] px-4 mt-10">
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl pb-3">Sign Up</h2>
-              <span className="text-sm">
+              <span className="text-md" style={{ fontFamily: "Athletics" }}>
                 Already have a fan?{" "}
                 <Link to="/login" className="underline">
                   sign in here.
                 </Link>
               </span>
             </div>
-            <div className="my-10 flex flex-col gap-y-5">
+            <div
+              className="my-10 flex flex-col gap-y-5"
+              style={{ fontFamily: "Athletics" }}
+            >
               <label
                 htmlFor="fullName"
-                className="text-gray-700 text-sm flex-1"
+                className="text-gray-700 text-md flex-1"
               >
                 Full Name
                 <input
@@ -86,7 +89,7 @@ const Register = () => {
                   </span>
                 )}
               </label>
-              <label htmlFor="email" className="text-gray-700 text-sm flex-1">
+              <label htmlFor="email" className="text-gray-700 text-md flex-1">
                 Email
                 <input
                   className="border rounded w-full my-2 py-1 px-2 font-normal"
@@ -102,7 +105,7 @@ const Register = () => {
               </label>
               <label
                 htmlFor="password"
-                className="text-gray-700 text-sm flex-1"
+                className="text-gray-700 text-md flex-1"
               >
                 Password
                 <div className="relative">
@@ -133,7 +136,7 @@ const Register = () => {
               </label>
               <label
                 htmlFor="confirmPassword"
-                className="text-gray-700 text-sm flex-1"
+                className="text-gray-700 text-md flex-1"
               >
                 Confirm Password
                 <div className="relative">
@@ -170,7 +173,10 @@ const Register = () => {
               </label>
             </div>
 
-            <button className="bg-[#2654E1] w-full text-white px-3 py-1.5 hover:bg-[#2654E1]/90 transition-colors duration-300 rounded">
+            <button
+              className="bg-black w-full text-white px-3 py-2 hover:bg-black/90 transition-colors duration-300 rounded-full"
+              style={{ fontFamily: "Athletics" }}
+            >
               Create Account
             </button>
 
@@ -178,7 +184,8 @@ const Register = () => {
 
             <button
               onClick={apiClient.googleLogin}
-              className="flex items-center justify-center w-full hover:bg-slate-100 transition-colors duration-300 px-3 border py-1.5 rounded"
+              className="flex items-center justify-center w-full hover:bg-slate-100 transition-colors duration-300 px-3 border py-2 rounded-full"
+              style={{ fontFamily: "Athletics" }}
             >
               <FcGoogle className="mr-2 w-6 h-6" />
               <p className="pt-0.5">Sign in with Google</p>

@@ -7,20 +7,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 export const Testimonials = () => {
   return (
-    <Carousel
-      plugins={[
-        Autoplay({
-          delay: 3000,
-        }),
-      ]}
-      className="w-full max-w-full px-4 lg:px-0 py-20 space-y-32"
-    >
+    <Carousel className="w-full max-w-full px-4 lg:px-0 py-20 space-y-32">
       <div>
-        <div className="flex items-center text-center flex-col gap-y-5 lg:gap-y-0 text-xl">
+        <div
+          className="flex items-center text-center flex-col gap-y-5 lg:gap-y-0 text-xl sm:text-2xl md:text-3xl"
+          style={{ fontFamily: "Athletics" }}
+        >
           <p>Ready to turn your favorite tunes into unforgettable art?</p>
           <p>Let's bring your music to life, one image at a time.</p>
         </div>

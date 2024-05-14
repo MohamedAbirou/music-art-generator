@@ -57,15 +57,18 @@ const Login = () => {
           <div className="w-full max-w-[500px] px-4">
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl pb-3">Sign In</h2>
-              <span className="text-sm">
+              <span className="text-md" style={{ fontFamily: "Athletics" }}>
                 New to Music & Art?{" "}
                 <Link to="/register" className="underline">
                   register here.
                 </Link>
               </span>
             </div>
-            <div className="my-10 flex flex-col gap-y-5">
-              <label htmlFor="email" className="text-gray-700 text-sm flex-1">
+            <div
+              className="my-10 flex flex-col gap-y-5"
+              style={{ fontFamily: "Athletics" }}
+            >
+              <label htmlFor="email" className="text-gray-700 text-md flex-1">
                 Email
                 <input
                   className="border rounded w-full my-2 py-1 px-2 font-normal"
@@ -81,7 +84,7 @@ const Login = () => {
               </label>
               <label
                 htmlFor="password"
-                className="text-gray-700 text-sm flex-1"
+                className="text-gray-700 text-md flex-1"
               >
                 Password
                 <div className="relative">
@@ -112,7 +115,10 @@ const Login = () => {
               </label>
             </div>
 
-            <button className="bg-[#2654E1] w-full text-white px-3 py-1.5 hover:bg-[#2654E1]/90 transition-colors duration-300 rounded">
+            <button
+              className="bg-black w-full text-white px-3 py-2 hover:bg-black/90 transition-colors duration-300 rounded-full"
+              style={{ fontFamily: "Athletics" }}
+            >
               Login
             </button>
 
@@ -120,7 +126,8 @@ const Login = () => {
 
             <button
               onClick={apiClient.googleLogin}
-              className="flex items-center justify-center w-full hover:bg-slate-100 transition-colors duration-300 px-3 border py-1.5 rounded"
+              className="flex items-center justify-center w-full hover:bg-slate-100 transition-colors duration-300 px-3 border py-2 rounded-full"
+              style={{ fontFamily: "Athletics" }}
             >
               <FcGoogle className="mr-2 w-6 h-6" />
               <p className="pt-0.5">Sign in with Google</p>
