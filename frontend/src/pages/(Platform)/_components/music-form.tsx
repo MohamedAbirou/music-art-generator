@@ -1,29 +1,31 @@
 import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
+import ProgressBar from "./progress-bar";
+import { STEPS } from "../dashboard";
 
 interface MusicFormProps {
   actionLabel: string;
   disabled?: boolean;
-  secondaryAction?: () => void;
-  secondaryActionLabel?: string;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
   artistValue: string;
   songValue: string;
   colorValue: string;
   setValue: (id: string, value: string) => void;
+  step: STEPS;
+  STEPS: typeof STEPS;
 }
 
 export const MusicForm = ({
   actionLabel,
   disabled,
-  secondaryAction,
-  secondaryActionLabel,
   register,
   errors,
   artistValue,
   songValue,
   colorValue,
   setValue,
+  step,
+  STEPS,
 }: MusicFormProps) => {
   return (
     <>
@@ -86,18 +88,11 @@ export const MusicForm = ({
 
       <div className="flex justify-center">
         <div className="w-full absolute bottom-4">
-          <hr />
-          <div className="flex items-center justify-between mx-3">
-            <button
-              onClick={secondaryAction}
-              className={`${
-                secondaryActionLabel &&
-                "bg-black text-white px-7 py-2 mt-4 hover:bg-black/90 transition-colors duration-300 rounded-full"
-              }`}
-              style={{ fontFamily: "Athletics" }}
-            >
-              {secondaryActionLabel}
-            </button>
+          <ProgressBar
+            currentStep={step}
+            totalSteps={Object.keys(STEPS).length / 2}
+          />
+          <div className="flex items-center justify-end mx-3">
             <button
               type="submit"
               className="bg-black text-white px-7 py-2 mt-4 hover:bg-black/90 transition-colors duration-300 rounded-full"

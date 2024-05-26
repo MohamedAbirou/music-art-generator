@@ -27,11 +27,9 @@ const useCanvas = (
         transparency,
         translateX,
         translateY,
-        lineHeight,
         letterSpacing,
         textColor,
         fontFamily,
-        lyrics,
       } = options;
 
       const canvas = canvasRef.current;
@@ -54,18 +52,6 @@ const useCanvas = (
       ctx.fillStyle = `rgba(${hexToRgb(textColor)}, ${transparency})`;
       ctx.textAlign = "center";
       ctx.letterSpacing = `${letterSpacing}px`;
-
-      const lines = lyrics
-        .reduce((acc: string[][], word: string, i: number) => {
-          if (i % 3 === 0) acc.push([]);
-          acc[acc.length - 1].push(word);
-          return acc;
-        }, [])
-        .map((line) => line.join(" ").replace(/"/g, ""));
-
-      lines.forEach((line, index) => {
-        ctx.fillText(line, 0, index * lineHeight);
-      });
 
       ctx.restore();
     };

@@ -9,11 +9,12 @@ import { MusicForm } from "./_components/music-form";
 import { Customization } from "./_components/Customization";
 import { Finalize } from "./_components/Finalize";
 import { CanvasOptions } from "@/hooks/useCanvas";
+import { ArrowLeft, LucideIcon } from "lucide-react";
 
-enum STEPS {
-  GENERATION = 0,
-  CUSTOMIZATION = 1,
-  FINALIZE = 2,
+export enum STEPS {
+  GENERATION = 1,
+  CUSTOMIZATION = 2,
+  FINALIZE = 3,
 }
 
 const DashboardPage = () => {
@@ -138,7 +139,7 @@ const DashboardPage = () => {
       return undefined;
     }
 
-    return "Back";
+    return (<ArrowLeft />) as React.ReactElement<LucideIcon>;
   }, [step]);
 
   let bodyContent;
@@ -149,14 +150,14 @@ const DashboardPage = () => {
         <MusicForm
           actionLabel={actionLabel}
           disabled={isLoading}
-          secondaryAction={step === STEPS.GENERATION ? undefined : onBack}
-          secondaryActionLabel={secondaryActionLabel}
           register={register}
           errors={errors}
           artistValue={artist}
           songValue={song}
           colorValue={color}
           setValue={setCustomValue}
+          step={step}
+          STEPS={STEPS}
         />
       </div>
     );
@@ -174,6 +175,8 @@ const DashboardPage = () => {
           mood={mood}
           lyrics={lyrics}
           canvasRef={canvasRef}
+          step={step}
+          STEPS={STEPS}
         />
       </div>
     );
@@ -191,6 +194,8 @@ const DashboardPage = () => {
         colorValue={color}
         image={generatedImage}
         options={options}
+        step={step}
+        STEPS={STEPS}
       />
     );
   }

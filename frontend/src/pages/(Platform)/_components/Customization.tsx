@@ -1,16 +1,21 @@
 import { fonts } from "@/constants/fonts";
 import { hexToRgb } from "@/utils/utils";
 import { useState, useEffect, useCallback } from "react";
+import { STEPS } from "../dashboard";
+import ProgressBar from "./progress-bar";
+import { LucideIcon } from "lucide-react";
 
 interface CustomizationProps {
   actionLabel: string;
   disabled?: boolean;
   secondaryAction?: () => void;
-  secondaryActionLabel?: string;
+  secondaryActionLabel?: React.ReactElement<LucideIcon>;
   image: HTMLImageElement | null;
   mood: string | null;
   lyrics: string[];
   canvasRef: React.RefObject<HTMLCanvasElement>;
+  step: STEPS;
+  STEPS: typeof STEPS;
 }
 
 export const Customization = ({
@@ -22,6 +27,8 @@ export const Customization = ({
   mood,
   lyrics,
   canvasRef,
+  step,
+  STEPS,
 }: CustomizationProps) => {
   const [rotation, setRotation] = useState<number>(0);
   const [fontSize, setFontSize] = useState<number>(50);
@@ -218,7 +225,7 @@ export const Customization = ({
             id="translateX"
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             type="number"
-            step="0.1"
+            step="1"
             value={translateX}
             onChange={(e) => setTranslateX(parseFloat(e.target.value))}
             onBlur={handleStyleChange}
@@ -230,7 +237,7 @@ export const Customization = ({
             id="translateY"
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             type="number"
-            step="0.1"
+            step="1"
             value={translateY}
             onChange={(e) => setTranslateY(parseFloat(e.target.value))}
             onBlur={handleStyleChange}
@@ -288,7 +295,10 @@ export const Customization = ({
 
       <div className="flex justify-center">
         <div className="w-full absolute bottom-4">
-          <hr />
+          <ProgressBar
+            currentStep={step}
+            totalSteps={Object.keys(STEPS).length / 2}
+          />
           <div className="flex items-center justify-between mx-3">
             <button
               onClick={secondaryAction}
