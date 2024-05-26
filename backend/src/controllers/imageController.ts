@@ -205,13 +205,8 @@ const generate = async (req: Request, res: Response) => {
       keywords: lyricsList,
     });
   } catch (error) {
-      if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.response?.data || error.message);
-      return res.status(500).json({ message: error.response?.data || "Something went wrong!" });
-      } else {
-        console.error('Unknown error:', error);
-        return res.status(500).json({ message: "Something went wrong!" });
-      }
+      console.error('Unknown error:', error);
+      return res.status(500).json({ message: "Something went wrong!" });
   }
 };
 
