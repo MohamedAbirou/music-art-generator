@@ -25,7 +25,7 @@ const DashboardPage = () => {
   const [lyrics, setLyrics] = useState<string[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [options, setOptions] = useState<CanvasOptions>({
+  const [options] = useState<CanvasOptions>({
     rotation: 0,
     fontSize: 50,
     transparency: 0.5,
