@@ -27,7 +27,9 @@ const AvatarImage = React.forwardRef<
 
   return (
     <div className="flex items-center justify-center">
-      {isLoading && <Loader2 size={20} className="ml-2 animate-spin" />}
+      {props.src && isLoading && (
+        <Loader2 size={20} className="ml-2 animate-spin" />
+      )}
       <AvatarPrimitive.Image
         ref={ref}
         className={cn("aspect-square h-full w-full", className)}

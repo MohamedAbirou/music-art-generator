@@ -11,6 +11,7 @@ import { logEvents, logger } from "./middleware/logger";
 import rootRoute from "./routes/root";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import imageRoutes from "./routes/imageRoutes";
 import errorHandler from "./middleware/errorHandler";
 import MongoStore from "connect-mongo";
 
@@ -71,6 +72,7 @@ const Host = process.env.PORT;
 app.use("/", rootRoute);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/images", imageRoutes);
 
 // Google Auth
 app.get(

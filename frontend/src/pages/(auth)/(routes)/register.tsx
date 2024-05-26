@@ -47,7 +47,7 @@ const Register = () => {
     <>
       <div className="flex">
         <form
-          className="relative flex flex-col gap-5 items-center justify-center w-full md:w-[55%]"
+          className="relative flex flex-col gap-5 items-center justify-center w-full md:w-[55%] min-h-screen"
           onSubmit={onSubmit}
         >
           <Link
@@ -56,7 +56,7 @@ const Register = () => {
           >
             Music & <span className="text-blue-500 pl-1">Art</span>
           </Link>
-          <div className="w-full max-w-[500px] px-4 mt-10">
+          <div className="w-full max-w-[500px] px-4 md:mt-10">
             <div className="text-center md:text-left">
               <h2 className="text-2xl md:text-3xl pb-3">Sign Up</h2>
               <span className="text-md" style={{ fontFamily: "Athletics" }}>

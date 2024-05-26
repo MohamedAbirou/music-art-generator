@@ -2,6 +2,7 @@ import axios from "axios";
 import { LoginFormData } from "./pages/(auth)/(routes)/login";
 import { RegisterFormData } from "./pages/(auth)/(routes)/register";
 import { UserType } from "../../backend/src/shared/types";
+import { FieldValues } from "react-hook-form";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -96,3 +97,41 @@ export const checkSession = async () => {
 
   return response.data;
 };
+
+//* Image Generation
+
+export const generateImage = async (formData: FieldValues) => {
+  const response = await axios.post(
+    `${API_BASE_URL}/api/images/generate`,
+    formData,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (response.status !== 200) {
+    throw new Error(response.data.message);
+  }
+
+  return response.data;
+};
+
+// export const createGeneration = async (formData: FieldValues) => {
+//   const response = await axios.post(
+//     `${API_BASE_URL}/api/images/create`,
+//     formData,
+//     {
+//       withCredentials: true,
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   );
+
+//   if (response.status !== 200) {
+//     throw new Error(response.data.message);
+//   }
+// };

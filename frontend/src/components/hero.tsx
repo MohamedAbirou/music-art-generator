@@ -14,7 +14,7 @@ export const Hero = () => {
         </p>
         <div className="w-full lg:w-3/4 flex flex-col sm:flex-row items-center justify-center sm:justify-start space-y-5 sm:space-y-0 sm:space-x-20 md:space-x-0">
           <Link
-            to="/shop"
+            to="/generate"
             className="w-full lg:w-6/12 text-center py-4 rounded-full bg-black hover:bg-black/85 transition-colors duration-300 text-white"
           >
             Start now

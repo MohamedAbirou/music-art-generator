@@ -4,6 +4,8 @@ import Layout from "./layouts/layout";
 import Login from "./pages/(auth)/(routes)/login";
 import Register from "./pages/(auth)/(routes)/register";
 import { useEffect } from "react";
+import DashboardPage from "./pages/(Platform)/dashboard";
+import Cart from "./pages/(Platform)/cart";
 
 function App() {
   const loadFont = async (fontName: string, fontURL: string) => {
@@ -14,6 +16,17 @@ function App() {
 
   useEffect(() => {
     loadFont("Athletics", "/fonts/Athletics-Regular.otf");
+    loadFont("Sansita Swashed", "/fonts/SansitaSwashed-VariableFont_wght.ttf");
+    loadFont("BioRhyme", "/fonts/BioRhyme-VariableFont_wdth,wght.ttf");
+    loadFont("Dancing Script", "/fonts/DancingScript-VariableFont_wght.ttf");
+    loadFont("Merienda", "/fonts/Merienda-VariableFont_wght.ttf");
+    loadFont(
+      "Sixtyfour",
+      "/fonts/Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf"
+    );
+    loadFont("Alkatra", "/fonts/Alkatra-VariableFont_wght.ttf");
+    loadFont("Madimi One", "/fonts/MadimiOne-Regular.ttf");
+    loadFont("Orbitron", "/fonts/Orbitron-VariableFont_wght.ttf");
   }, []);
 
   return (
@@ -27,6 +40,15 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/cart"
+          element={
+            <Layout>
+              <Cart />
+            </Layout>
+          }
+        />
+        <Route path="/generate" element={<DashboardPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<>Navigate to</>} />
