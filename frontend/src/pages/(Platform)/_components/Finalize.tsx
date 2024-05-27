@@ -3,7 +3,7 @@ import { LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { STEPS } from "../dashboard";
 import ProgressBar from "./progress-bar";
-import useCanvas, { CanvasOptions } from "@/hooks/useCanvas";
+import { useCallback, useEffect } from "react";
 
 interface FinalizeProps {
   actionLabel: string;
@@ -16,7 +16,6 @@ interface FinalizeProps {
   step: STEPS;
   STEPS: typeof STEPS;
   image: HTMLImageElement | null;
-  options: CanvasOptions;
 }
 
 export const Finalize = ({
@@ -30,12 +29,27 @@ export const Finalize = ({
   step,
   STEPS,
   image,
-  options,
 }: FinalizeProps) => {
   const colorNames = namer(colorValue || "FFFFFF");
   const colorName = colorNames.basic[0].name;
 
-  useCanvas(canvasRef, image, options);
+  const handleStyleChange = useCallback(() => {
+    if (!canvasRef.current || !image) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    ctx.restore();
+  }, [canvasRef, image]);
+
+  useEffect(() => {
+    handleStyleChange();
+  }, [handleStyleChange, step]);
 
   return (
     <>

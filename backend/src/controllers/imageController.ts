@@ -40,7 +40,7 @@ const generate = async (req: Request, res: Response) => {
             role: "user",
             parts: [
               {
-                text: `answer with a single word that is among these words [Happy, Exuberant, Energetic, Frantic, Anxious, Sad, Depression, Calm, Contentment]: What's the mood of the song '${song}' by ${artist}`,
+                text: `answer with a single word that is among these words [Happy, Exuberant, Energetic, Frantic, Anxious, Sad, Depression, Calm, Contentment, Power]: What's the mood of the song '${song}' by ${artist}`,
               },
             ],
           },
@@ -54,6 +54,8 @@ const generate = async (req: Request, res: Response) => {
     );
 
     const mood = getMood.data.candidates[0].content?.parts[0]?.text;
+
+    console.log("Mood:", mood);
 
     const getSongId = await axios.get(
       "https://spotify23.p.rapidapi.com/search/",
@@ -71,6 +73,8 @@ const generate = async (req: Request, res: Response) => {
     );
 
     const songId = getSongId.data.tracks.items[0].data.id;
+
+    console.log("Song ID:", songId);
 
     const getSongLyrics = await axios.get(
       "https://spotify23.p.rapidapi.com/track_lyrics/",
@@ -91,6 +95,8 @@ const generate = async (req: Request, res: Response) => {
 
     const lyrics = lines.join("\n");
 
+    console.log("Lyrics:", lyrics);
+
     const songAnalysis = await axios.get(
       "https://twinword-sentiment-analysis.p.rapidapi.com/analyze/",
       {
@@ -109,6 +115,8 @@ const generate = async (req: Request, res: Response) => {
     );
 
     const sentence = keywords.join(", ");
+
+    console.log("Sentence:", sentence);
 
     const getLyrics = await axios.post(
       `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`,
@@ -133,6 +141,8 @@ const generate = async (req: Request, res: Response) => {
 
     const lyricsList =
       getLyrics.data.candidates[0].content?.parts[0]?.text?.split(" ");
+
+    console.log("Lyrics List:", lyricsList);
 
     const getImprovedPrompt = await axios.post(
       "https://cloud.leonardo.ai/api/rest/v1/prompt/improve",
@@ -205,8 +215,8 @@ const generate = async (req: Request, res: Response) => {
       keywords: lyricsList,
     });
   } catch (error) {
-      console.error('Unknown error:', error);
-      return res.status(500).json({ message: "Something went wrong!" });
+    console.error("Unknown error:", error);
+    return res.status(500).json({ message: "Something went wrong!" });
   }
 };
 

@@ -8,13 +8,24 @@ import { GenerationHub } from "./_components/generation-hub";
 import { MusicForm } from "./_components/music-form";
 import { Customization } from "./_components/Customization";
 import { Finalize } from "./_components/Finalize";
-import { CanvasOptions } from "@/hooks/useCanvas";
 import { ArrowLeft, LucideIcon } from "lucide-react";
 
 export enum STEPS {
   GENERATION = 1,
   CUSTOMIZATION = 2,
   FINALIZE = 3,
+}
+
+export interface CanvasOptions {
+  rotation: number;
+  fontSize: number;
+  transparency: number;
+  translateX: number;
+  translateY: number;
+  lineHeight: number;
+  letterSpacing: number;
+  textColor: string;
+  fontFamily: string;
 }
 
 const DashboardPage = () => {
@@ -26,7 +37,7 @@ const DashboardPage = () => {
   const [lyrics, setLyrics] = useState<string[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [options] = useState<CanvasOptions>({
+  const [options, setOptions] = useState<CanvasOptions>({
     rotation: 0,
     fontSize: 50,
     transparency: 0.5,
@@ -36,7 +47,6 @@ const DashboardPage = () => {
     letterSpacing: 0,
     textColor: "#ffffff",
     fontFamily: "sans serif",
-    lyrics: [],
   });
 
   const {
@@ -118,8 +128,7 @@ const DashboardPage = () => {
     } else if (step === STEPS.CUSTOMIZATION) {
       onNext();
     } else if (step === STEPS.FINALIZE) {
-      console.log("Finalize data", data);
-      localStorage.clear();
+      console.log(data);
     }
   });
 
@@ -177,6 +186,8 @@ const DashboardPage = () => {
           canvasRef={canvasRef}
           step={step}
           STEPS={STEPS}
+          options={options}
+          setOptions={setOptions}
         />
       </div>
     );
@@ -193,7 +204,6 @@ const DashboardPage = () => {
         songValue={song}
         colorValue={color}
         image={generatedImage}
-        options={options}
         step={step}
         STEPS={STEPS}
       />

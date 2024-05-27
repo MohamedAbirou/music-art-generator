@@ -1,7 +1,7 @@
 import { fonts } from "@/constants/fonts";
 import { hexToRgb } from "@/utils/utils";
 import { useState, useEffect, useCallback } from "react";
-import { STEPS } from "../dashboard";
+import { CanvasOptions, STEPS } from "../dashboard";
 import ProgressBar from "./progress-bar";
 import { LucideIcon } from "lucide-react";
 
@@ -16,6 +16,8 @@ interface CustomizationProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   step: STEPS;
   STEPS: typeof STEPS;
+  options: CanvasOptions;
+  setOptions: React.Dispatch<React.SetStateAction<CanvasOptions>>;
 }
 
 export const Customization = ({
@@ -29,54 +31,49 @@ export const Customization = ({
   canvasRef,
   step,
   STEPS,
+  options,
+  setOptions,
 }: CustomizationProps) => {
-  const [rotation, setRotation] = useState<number>(0);
-  const [fontSize, setFontSize] = useState<number>(50);
-  const [transparency, setTransparency] = useState<number>(0.5);
-  const [translateX, setTranslateX] = useState<number>(0);
-  const [translateY, setTranslateY] = useState<number>(0);
-  const [lineHeight, setLineHeight] = useState<number>(60);
-  const [letterSpacing, setLetterSpacing] = useState<number>(0);
-  const [textColor, setTextColor] = useState<string>("#ffffff");
-  const [fontFamily, setFontFamily] = useState<string>("sans serif");
   const [randomX, setRandomX] = useState(0);
   const [randomY, setRandomY] = useState(0);
 
   useEffect(() => {
     switch (mood) {
       case "Happy":
-        setFontFamily("Sansita Swashed");
+        setOptions((prev) => ({ ...prev, fontFamily: "Sansita Swashed" }));
         break;
       case "Exuberant":
-        setFontFamily("BioRhyme");
+        setOptions((prev) => ({ ...prev, fontFamily: "BioRhyme" }));
         break;
       case "Energetic":
-        setFontFamily("Dancing Script");
+        setOptions((prev) => ({ ...prev, fontFamily: "Dancing Script" }));
         break;
       case "Frantic":
-        setFontFamily("Merienda");
+        setOptions((prev) => ({ ...prev, fontFamily: "Merienda" }));
         break;
       case "Anxious":
-        setFontFamily("Sixtyfour");
+        setOptions((prev) => ({ ...prev, fontFamily: "Sixtyfour" }));
         break;
       case "Sad":
-        setFontFamily("Sixtyfour");
+        setOptions((prev) => ({ ...prev, fontFamily: "Sixtyfour" }));
         break;
       case "Depression":
-        setFontFamily("Alkatra");
+        setOptions((prev) => ({ ...prev, fontFamily: "Alkatra" }));
         break;
       case "Calm":
-        setFontFamily("Madimi one");
+        setOptions((prev) => ({ ...prev, fontFamily: "Madimi one" }));
         break;
       case "Contentment":
-        setFontFamily("Orbitron");
+        setOptions((prev) => ({ ...prev, fontFamily: "Orbitron" }));
         break;
-
+      case "Power":
+        setOptions((prev) => ({ ...prev, fontFamily: "Anton" }));
+        break;
       default:
-        setFontFamily("Arial");
+        setOptions((prev) => ({ ...prev, fontFamily: "Arial" }));
         break;
     }
-  }, [mood]);
+  }, [mood, setOptions]);
 
   useEffect(() => {
     // Only update the random positions when the image changes
@@ -90,39 +87,65 @@ export const Customization = ({
   }, [canvasRef, image]);
 
   useEffect(() => {
-    setRotation(Math.floor(Math.random() * 21) - 10);
-  }, [image]);
+    setOptions((prev) => ({
+      ...prev,
+      rotation: Math.floor(Math.random() * 21) - 10,
+    }));
+  }, [image, setOptions]);
 
   const handleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFontSize = parseInt(e.target.value);
-    setFontSize(newFontSize);
+    setOptions((prev) => ({
+      ...prev,
+      fontSize: newFontSize,
+    }));
 
     // Set the line height to be 1.2 times the font size
     const newLineHeight = newFontSize * 1.2;
-    setLineHeight(newLineHeight);
+    setOptions((prev) => ({
+      ...prev,
+      lineHeight: newLineHeight,
+    }));
   };
 
   const handleColorChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (image) {
-        setTextColor(e.target.value);
+        setOptions((prev) => ({
+          ...prev,
+          textColor: e.target.value,
+        }));
       }
     },
-    [image]
+    [image, setOptions]
   );
 
   const handleStyleChange = useCallback(() => {
+    if (!canvasRef.current || !image) return;
+
     // Update the canvas style immediately
     const canvas = canvasRef.current!;
     const ctx = canvas?.getContext("2d");
 
-    if (!ctx || !image) return;
+    if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
 
     // Draw the image as background
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    const {
+      rotation,
+      fontSize,
+      transparency,
+      translateX,
+      translateY,
+      lineHeight,
+      letterSpacing,
+      textColor,
+      fontFamily,
+    } = options;
 
     // Add the user's translation values
     const finalX = randomX + translateX;
@@ -150,26 +173,11 @@ export const Customization = ({
     });
 
     ctx.restore();
-  }, [
-    canvasRef,
-    image,
-    randomX,
-    translateX,
-    randomY,
-    translateY,
-    rotation,
-    fontSize,
-    fontFamily,
-    textColor,
-    transparency,
-    letterSpacing,
-    lyrics,
-    lineHeight,
-  ]);
+  }, [canvasRef, image, options, randomX, randomY, lyrics]);
 
   useEffect(() => {
     handleStyleChange();
-  }, [handleStyleChange]);
+  }, [handleStyleChange, options, step]);
 
   return (
     <>
@@ -188,8 +196,13 @@ export const Customization = ({
             type="range"
             min="-10"
             max="10"
-            value={rotation}
-            onChange={(e) => setRotation(parseInt(e.target.value))}
+            value={options.rotation}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                rotation: parseInt(e.target.value),
+              }))
+            }
             onBlur={handleStyleChange}
           />
         </label>
@@ -200,7 +213,7 @@ export const Customization = ({
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             type="number"
             min="1"
-            value={fontSize}
+            value={options.fontSize}
             onChange={handleFontSizeChange}
             onBlur={handleStyleChange}
           />
@@ -214,8 +227,13 @@ export const Customization = ({
             min="0"
             max="1"
             step="0.01"
-            value={transparency}
-            onChange={(e) => setTransparency(parseFloat(e.target.value))}
+            value={options.transparency}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                transparency: parseFloat(e.target.value),
+              }))
+            }
             onBlur={handleStyleChange}
           />
         </label>
@@ -226,8 +244,13 @@ export const Customization = ({
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             type="number"
             step="1"
-            value={translateX}
-            onChange={(e) => setTranslateX(parseFloat(e.target.value))}
+            value={options.translateX}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                translateX: parseInt(e.target.value),
+              }))
+            }
             onBlur={handleStyleChange}
           />
         </label>
@@ -238,8 +261,13 @@ export const Customization = ({
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             type="number"
             step="1"
-            value={translateY}
-            onChange={(e) => setTranslateY(parseFloat(e.target.value))}
+            value={options.translateY}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                translateY: parseInt(e.target.value),
+              }))
+            }
             onBlur={handleStyleChange}
           />
         </label>
@@ -250,8 +278,13 @@ export const Customization = ({
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             type="number"
             step="5"
-            value={lineHeight}
-            onChange={(e) => setLineHeight(parseFloat(e.target.value))}
+            value={options.lineHeight}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                lineHeight: parseInt(e.target.value),
+              }))
+            }
             onBlur={handleStyleChange}
           />
         </label>
@@ -261,8 +294,13 @@ export const Customization = ({
             id="letterSpacing"
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             type="number"
-            value={letterSpacing}
-            onChange={(e) => setLetterSpacing(parseInt(e.target.value))}
+            value={options.letterSpacing}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                letterSpacing: parseInt(e.target.value),
+              }))
+            }
             onBlur={handleStyleChange}
           />
         </label>
@@ -270,10 +308,15 @@ export const Customization = ({
           Font Family
           <select
             name="fontFamily"
-            value={fontFamily}
+            value={options.fontFamily}
             className="border rounded w-full my-2 py-1 px-2 font-normal"
             onBlur={handleStyleChange}
-            onChange={(e) => setFontFamily(e.target.value)}
+            onChange={(e) =>
+              setOptions((prev) => ({
+                ...prev,
+                fontFamily: e.target.value,
+              }))
+            }
           >
             {fonts.map((font) => (
               <option key={font.value} value={font.value}>
@@ -286,7 +329,7 @@ export const Customization = ({
           <input
             type="color"
             className="border rounded w-full my-2 py-1 px-2 font-normal"
-            value={textColor}
+            value={options.textColor}
             onChange={handleColorChange}
             onBlur={handleStyleChange}
           />

@@ -27,6 +27,7 @@ function App() {
     loadFont("Alkatra", "/fonts/Alkatra-VariableFont_wght.ttf");
     loadFont("Madimi One", "/fonts/MadimiOne-Regular.ttf");
     loadFont("Orbitron", "/fonts/Orbitron-VariableFont_wght.ttf");
+    loadFont("Anton", "/fonts/Anton-Regular.ttf");
   }, []);
 
   return (
