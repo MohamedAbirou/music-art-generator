@@ -31,4 +31,8 @@ export const fonts = [
     value: "Orbitron",
     label: "Orbitron",
   },
+  {
+    value: "Anton",
+    label: "Anton",
+  },
 ];
