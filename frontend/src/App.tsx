@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/(Marketing)/home";
 import Layout from "./layouts/layout";
 import Login from "./pages/(auth)/(routes)/login";
@@ -52,7 +52,7 @@ function App() {
         <Route path="/generate" element={<DashboardPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="*" element={<>Navigate to</>} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
