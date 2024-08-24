@@ -79,12 +79,12 @@ const generate = async (req: Request, res: Response) => {
     const getSongLyrics = await axios.get(
       "https://spotify23.p.rapidapi.com/track_lyrics/",
       {
-        headers: {
-          "X-RapidAPI-Key": process.env.RAPID_API_KEY,
-          "X-RapidAPI-Host": "spotify23.p.rapidapi.com",
-        },
         params: {
           id: songId,
+        },
+        headers: {
+          "x-rapidapi-key": process.env.RAPID_API_KEY,
+          "x-rapidapi-host": "spotify23.p.rapidapi.com",
         },
       }
     );
@@ -214,8 +214,8 @@ const generate = async (req: Request, res: Response) => {
       mood: mood,
       keywords: lyricsList,
     });
-  } catch (error) {
-    console.error("Unknown error:", error);
+  } catch (error: any) {
+    console.error("Unknown error:", error.message);
     return res.status(500).json({ message: "Something went wrong!" });
   }
 };

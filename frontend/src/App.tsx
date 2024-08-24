@@ -6,6 +6,11 @@ import Register from "./pages/(auth)/(routes)/register";
 import { useEffect } from "react";
 import DashboardPage from "./pages/(Platform)/dashboard";
 import Cart from "./pages/(Platform)/cart";
+import Page404 from "./pages/(errors)/404";
+import Page403 from "./pages/(errors)/403";
+import Page401 from "./pages/(errors)/401";
+import Page419 from "./pages/(errors)/419";
+import Page500 from "./pages/(errors)/500";
 
 function App() {
   const loadFont = async (fontName: string, fontURL: string) => {
@@ -41,18 +46,18 @@ function App() {
             </Layout>
           }
         />
-        <Route
-          path="/cart"
-          element={
-            <Layout>
-              <Cart />
-            </Layout>
-          }
-        />
+        <Route path="/cart" element={<Cart />} />
+
         <Route path="/generate" element={<DashboardPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="*" element={<>Navigate to</>} />
+
+        <Route path="/401" element={<Page401 />} />
+        <Route path="/403" element={<Page403 />} />
+        <Route path="/419" element={<Page419 />} />
+        <Route path="/500" element={<Page500 />} />
+
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </Router>
   );
